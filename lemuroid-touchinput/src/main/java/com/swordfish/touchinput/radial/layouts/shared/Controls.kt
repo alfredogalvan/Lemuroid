@@ -155,4 +155,7 @@ object ComposeTouchLayouts {
     const val MOTION_SOURCE_RIGHT_STICK = 2
     const val MOTION_SOURCE_DPAD_AND_LEFT_STICK = 3
     const val MOTION_SOURCE_RIGHT_DPAD = 4
+
+    // Analog stick whose position is converted to an 8-way dpad.
+    const val MOTION_SOURCE_DPAD_STICK = 5
 }

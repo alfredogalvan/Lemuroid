@@ -4,7 +4,7 @@ import android.view.KeyEvent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.ui.Modifier
-import com.swordfish.touchinput.radial.controls.LemuroidControlCross
+import com.swordfish.touchinput.radial.controls.LemuroidControlAnalog
 import com.swordfish.touchinput.radial.controls.LemuroidControlFaceButtons
 import com.swordfish.touchinput.radial.layouts.shared.ComposeTouchLayouts
 import com.swordfish.touchinput.radial.layouts.shared.SecondaryButtonL
@@ -28,7 +28,9 @@ fun PadKitScope.GBALeft(
     BaseLayoutLeft(
         settings = settings,
         modifier = modifier,
-        primaryDial = { LemuroidControlCross(id = Id.DiscreteDirection(ComposeTouchLayouts.MOTION_SOURCE_DPAD)) },
+        primaryDial = {
+            LemuroidControlAnalog(id = Id.ContinuousDirection(ComposeTouchLayouts.MOTION_SOURCE_DPAD_STICK))
+        },
         secondaryDials = {
             SecondaryButtonL()
             SecondaryButtonSelect(position = 2)

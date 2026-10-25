@@ -33,6 +33,12 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlin.math.PI
+import kotlin.math.atan2
+import kotlin.math.cos
+import kotlin.math.hypot
+import kotlin.math.round
+import kotlin.math.sin
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class GameViewModelTouchControls(
@@ -215,10 +221,29 @@ class GameViewModelTouchControls(
                     yAxis,
                 )
             }
+
+            ComposeTouchLayouts.MOTION_SOURCE_DPAD_STICK -> {
+                val (dpadX, dpadY) = stickToDpad(xAxis, yAxis)
+                retroGameView.retroGameView?.sendMotionEvent(MOTION_SOURCE_DPAD, dpadX, dpadY)
+            }
         }
+    }
+
+    // Splits the stick into eight equal 45° sectors, ignoring small movements around the center.
+    private fun stickToDpad(
+        xAxis: Float,
+        yAxis: Float,
+    ): Pair<Float, Float> {
+        if (hypot(xAxis, yAxis) < STICK_DPAD_DEAD_ZONE) {
+            return 0f to 0f
+        }
+        val sector = Math.floorMod(round(atan2(yAxis, xAxis) / (PI.toFloat() / 4f)).toInt(), 8)
+        val angle = sector * PI / 4.0
+        return round(cos(angle)).toFloat() to round(sin(angle)).toFloat()
     }
 
     companion object {
         const val MENU_LOADING_ANIMATION_MILLIS = 500
+        private const val STICK_DPAD_DEAD_ZONE = 0.3f
     }
 }
